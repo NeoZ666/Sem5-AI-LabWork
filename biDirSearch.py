@@ -1,40 +1,34 @@
 from collections import deque
 
-def bidirectionalSearch(graph, start, target):
-    # Create two sets to keep track of the nodes explored from the start and target nodes.
+def BiDirectionalSearch(graph,start,target):
     startExplored = {start}
     targetExplored = {target}
 
-    # Create two queues to keep track of the nodes to be explored from the start and target nodes.
-    startQueue = deque([start])
-    targetQueue = deque([target])
+    startQue = deque([start])
+    targetQue = deque([target])
 
-    while startQueue and targetQueue:
-        # Perform one step of BFS from the start node.
-        nodeFromStart = startQueue.popleft()
-        for neighbor in graph[nodeFromStart]:
-            if neighbor not in startExplored:
-                startExplored.add(neighbor)
-                startQueue.append(neighbor)
+    while startQue and targetQue:
 
-                # Check if this node is also explored from the target node.
-                if neighbor in targetExplored:
-                    return "Path found!"
+        nodeFromStart = startQue.popleft()
+        for neighb in graph[nodeFromStart]:
+            if neighb not in startExplored:
+                startQue.append(neighb)
+                startExplored.add(neighb)
 
-        # Perform one step of BFS from the target node.
-        nodeFromTarget = targetQueue.popleft()
-        for neighbor in graph[nodeFromTarget]:
-            if neighbor not in targetExplored:
-                targetExplored.add(neighbor)
-                targetQueue.append(neighbor)
+                if neighb in targetExplored:
+                    return f"Path Found! {targetExplored} and {startExplored}"
 
-                # Check if this node is also explored from the start node.
-                if neighbor in startExplored:
-                    return "Path found!"
+        nodeFromTarget = targetQue.popleft()
+        for neighb in graph[nodeFromTarget]:
+            if neighb not in targetExplored:
+                targetQue.append(neighb)
+                targetExplored.add(neighb)
+
+                if neighb in startExplored:
+                    return f"Path Found! {targetExplored} and {startExplored}"
 
     return "Path not found!"
 
-# Create the adjacency list representation of the graph
 graph = {
     1: [2, 3],
     2: [1, 4, 5],
@@ -50,5 +44,5 @@ graph = {
 
 start_node = 1
 target_node = 10
-result = bidirectionalSearch(graph, start_node, target_node)
+result = BiDirectionalSearch(graph, start_node, target_node)
 print(result)
